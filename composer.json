@@ -1,0 +1,24 @@
+{
+    "name": "gomaa/test",
+    "description": "Greet - A simple Package Base",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mido1",
+            "email": "mido.15897@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Gomaa\\Test\\": "src/"
+        }
+    },
+    "laravel": {
+        "providers": [
+            "Gomaa\\Test\\TestServiceProvider"
+        ]
+    },
+    "require": {}
+}
