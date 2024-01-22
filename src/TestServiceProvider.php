@@ -11,21 +11,36 @@ class TestServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->offerPublishing();
+
+        // php artisan crud:all ExampleCommand "id,name"
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Gomaa\Test\Commands\MakeCrudCommand::class,
+            ]);
+        }
     }
 
     public function register()
     {
-
+        $this->app->bind('command.crud:all', \Gomaa\Test\Commands\MakeCrudCommand::class);
+        $this->commands([
+            'command.crud:all',
+        ]);
     }
 
     protected function offerPublishing()
     {
-        if (! function_exists('config_path')) {
+        if (!function_exists('config_path')) {
             // function not available and 'publish' not relevant in Lumen
             return;
         }
 
-        $this->publishes([__DIR__.'/../database/migrations/create_permission_tables.php.stub' => $this->getMigrationFileName('create_permission_tables.php')], 'permission-migrations');
+        $this->publishes(
+            [
+                __DIR__ . '/../database/migrations/create_permission_tables.php.stub' =>
+                    $this->getMigrationFileName('create_permission_tables.php')
+            ], 'permission-migrations');
+
     }
 
     /**
@@ -37,11 +52,11 @@ class TestServiceProvider extends ServiceProvider
 
         $filesystem = $this->app->make(Filesystem::class);
 
-        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+        return Collection::make($this->app->databasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR)
             ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
-                return $filesystem->glob($path.'*_'.$migrationFileName);
+                return $filesystem->glob($path . '*_' . $migrationFileName);
             })
-            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->push($this->app->databasePath() . "/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
     }
 }
