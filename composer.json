@@ -1,15 +1,15 @@
 {
     "name": "gomaa/test",
     "description": "Greet - A simple Package Base",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "mido1",
             "email": "mido.15897@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Gomaa\\Test\\": "src/"
