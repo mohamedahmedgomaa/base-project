@@ -23,4 +23,6 @@ Update
 ## Project Two 
 
 - composer update
+- config app file : add to providers 
+- Gomaa\Test\TestServiceProvider::class
 -  php artisan vendor:publish --provider="Gomaa\Test\TestServiceProvider" .
