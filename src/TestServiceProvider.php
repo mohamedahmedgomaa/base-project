@@ -2,7 +2,11 @@
 
 namespace Gomaa\Test;
 
+use Gomaa\Test\commands\MakeControllerCommand;
 use Gomaa\Test\commands\MakeCrudCommand;
+use Gomaa\Test\commands\MakeModelCommand;
+use Gomaa\Test\commands\MakeRepositoryCommand;
+use Gomaa\Test\commands\MakeServiceCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +20,12 @@ class TestServiceProvider extends ServiceProvider
         // php artisan crud:all ExampleCommand "id,name"
         if ($this->app->runningInConsole()) {
             $this->commands([
-               MakeCrudCommand::class,
+                MakeCrudCommand::class,
+                MakeModelCommand::class,
+                MakeServiceCommand::class,
+                MakeRepositoryCommand::class,
+                MakeControllerCommand::class,
+                MakeCrudCommand::class,
             ]);
         }
     }
@@ -24,8 +33,16 @@ class TestServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('command.crud:all', MakeCrudCommand::class);
+        $this->app->bind('command.crud:model', MakeModelCommand::class);
+        $this->app->bind('command.crud:service', MakeServiceCommand::class);
+        $this->app->bind('command.crud:repository', MakeRepositoryCommand::class);
+        $this->app->bind('command.crud:controller', MakeControllerCommand::class);
         $this->commands([
             'command.crud:all',
+            'command.crud:model',
+            'command.crud:service',
+            'command.crud:repository',
+            'command.crud:controller',
         ]);
     }
 
