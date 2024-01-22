@@ -111,7 +111,7 @@ class MakeControllerCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../../stubs/new_controller.stub';
+        return __DIR__ . '/stubs/new_controller.stub';
     }
 
     /**

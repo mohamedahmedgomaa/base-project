@@ -95,7 +95,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../../stubs/new_repository.stub';
+        return __DIR__ . '/stubs/new_repository.stub';
     }
 
     /**
