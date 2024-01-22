@@ -95,7 +95,7 @@ class MakeServiceCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/new_service.stub';
+        return __DIR__ . '../../stubs/new_service.stub';
     }
 
     /**

@@ -29,7 +29,6 @@ class TestServiceProvider extends ServiceProvider
                 MakeControllerCommand::class,
                 MakeInterfaceCommand::class,
                 MakeRequestCommand::class,
-                MakeCrudCommand::class,
             ]);
         }
     }

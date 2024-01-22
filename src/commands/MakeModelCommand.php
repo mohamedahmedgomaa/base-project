@@ -96,7 +96,7 @@ class MakeModelCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/new_model.stub';
+        return __DIR__ . '../../stubs/new_model.stub';
     }
 
     /**

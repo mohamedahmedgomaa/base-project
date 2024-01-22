@@ -87,7 +87,7 @@ class MakeInterfaceCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/interface.stub';
+        return __DIR__ . '../../stubs/interface.stub';
     }
 
     /**
