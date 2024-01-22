@@ -1,28 +1,30 @@
 <?php
 
-namespace Gomaa\Test\Commands;
+namespace Gomaa\Test\commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Pluralizer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
 
-class MakeControllerCommand extends Command
+class MakeModelCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:controller
-                            {name : The name of the Model.}';
+    protected $signature = 'crud:model
+                            {name : The name of the model.}
+                            {--fillables= : Field names for the form & migration. example (id,name)}
+                            ';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make an Controller Class';
+    protected $description = 'Make an Model Class';
 
     /**
      * Filesystem instance
@@ -50,16 +52,6 @@ class MakeControllerCommand extends Command
 
         $this->makeDirectory(dirname($path));
 
-        // create files requests
-        $requestArray = ['Create', 'Update', 'Delete', 'Show', 'List'];
-        foreach ($requestArray as $request) {
-            $this->call('crud:request', [
-                'name' => $this->argument('name'),
-                '--request-action' => $request
-            ]);
-        }
-
-        // create file controller
         $contents = $this->getSourceFile();
 
         if (!$this->files->exists($path)) {
@@ -76,24 +68,9 @@ class MakeControllerCommand extends Command
      */
     public function getBasePath(): string
     {
-        return 'App\\Http\\Modules\\' . $this->getClassPlural() . '\\Controllers';
-    }
-
-    /**
-     * @return string
-     */
-    public function getServicePath(): string
-    {
-        return 'App\\Http\\Modules\\' . $this->getClassPlural() . '\\Services\\' . $this->argument('name') . 'Service';
-    }
-
-    /**
-     * @return string
-     */
-    public function getClassPlural(): string
-    {
         // Converts a singular word into a plural
-        return Str::of($this->argument('name'))->plural(5);
+        $plural_name = Str::of($this->argument('name'))->plural(5);
+        return 'App\\Http\\Modules\\'. $plural_name .'\\Models';
     }
 
     /**
@@ -101,7 +78,15 @@ class MakeControllerCommand extends Command
      */
     public function getBaseName(): string
     {
-        return $this->getSingularClassName($this->argument('name')) . 'Controller.php';
+        return $this->getSingularClassName($this->argument('name'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableName(): string
+    {
+        return Str::plural(Str::snake($this->argument('name')));
     }
 
     /**
@@ -111,7 +96,37 @@ class MakeControllerCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/new_controller.stub';
+        return __DIR__ . '../stubs/new_model.stub';
+    }
+
+    /**
+     * add fillables
+     * @param string $fillables
+     * @return string
+     */
+    public function getFillables(string $fillables): string
+    {
+        $arrayFillables = explode(',', $fillables);
+        $fillable = implode("', '", $arrayFillables);
+        return "['$fillable']";
+    }
+
+    /**
+     * add fillables in Filters
+     * @param string $fillables
+     * @return string
+     */
+    public function getAllowedFilters(string $fillables): string
+    {
+        $allowedFilterString = null;
+        $allowedFilters = explode(',', $fillables);
+        foreach ($allowedFilters as $allowedFilter) {
+            $allowedFilterString .= "
+            AllowedFilter::exact('$allowedFilter'),";
+        }
+
+        return  "[". $allowedFilterString ."
+        ]";
     }
 
     /**
@@ -125,11 +140,10 @@ class MakeControllerCommand extends Command
     {
         return [
             'NAMESPACE' => $this->getBasePath(),
-            'MODEL_NAME' => $this->getSingularClassName($this->argument('name')),
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('name')) . 'Controller',
-            'CLASS_PLURAL' => $this->getClassPlural(),
-            'SERVICE_NAME' => $this->getSingularClassName($this->argument('name')) . 'Service',
-            'SERVICE_PATH' => $this->getServicePath(),
+            'CLASS_NAME' => $this->getSingularClassName($this->argument('name')),
+            'FILLABLES' => $this->getFillables($this->option('fillables')),
+            'ALLOWED_FILTERS' => $this->getAllowedFilters($this->option('fillables')),
+            'TABLE_NAME' => $this->getTableName(),
         ];
     }
 
@@ -169,9 +183,9 @@ class MakeControllerCommand extends Command
      *
      * @return string
      */
-    public function getSourceFilePath()
+    public function getSourceFilePath(): string
     {
-        return $this->getBasePath() . '\\' . $this->getBaseName();
+        return $this->getBasePath() . '\\' . $this->getBaseName() . '.php';
     }
 
     /**

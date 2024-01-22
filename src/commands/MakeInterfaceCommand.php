@@ -1,30 +1,28 @@
 <?php
 
-namespace Gomaa\Test\Commands;
+namespace Gomaa\Test\commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Pluralizer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
 
-class MakeModelCommand extends Command
+class MakeInterfaceCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:model
-                            {name : The name of the model.}
-                            {--fillables= : Field names for the form & migration. example (id,name)}
-                            ';
+    protected $signature = 'crud:interface
+                                {name : The name of the Model.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make an Model Class';
+    protected $description = 'Make an Interface Class';
 
     /**
      * Filesystem instance
@@ -68,9 +66,10 @@ class MakeModelCommand extends Command
      */
     public function getBasePath(): string
     {
+
         // Converts a singular word into a plural
         $plural_name = Str::of($this->argument('name'))->plural(5);
-        return 'App\\Http\\Modules\\'. $plural_name .'\\Models';
+        return 'App\\Http\\Modules\\'. $plural_name .'\\Interfaces';
     }
 
     /**
@@ -78,15 +77,7 @@ class MakeModelCommand extends Command
      */
     public function getBaseName(): string
     {
-        return $this->getSingularClassName($this->argument('name'));
-    }
-
-    /**
-     * @return string
-     */
-    public function getTableName(): string
-    {
-        return Str::plural(Str::snake($this->argument('name')));
+        return $this->getSingularClassName($this->argument('name')) . 'Interface.php';
     }
 
     /**
@@ -96,37 +87,7 @@ class MakeModelCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/new_model.stub';
-    }
-
-    /**
-     * add fillables
-     * @param string $fillables
-     * @return string
-     */
-    public function getFillables(string $fillables): string
-    {
-        $arrayFillables = explode(',', $fillables);
-        $fillable = implode("', '", $arrayFillables);
-        return "['$fillable']";
-    }
-
-    /**
-     * add fillables in Filters
-     * @param string $fillables
-     * @return string
-     */
-    public function getAllowedFilters(string $fillables): string
-    {
-        $allowedFilterString = null;
-        $allowedFilters = explode(',', $fillables);
-        foreach ($allowedFilters as $allowedFilter) {
-            $allowedFilterString .= "
-            AllowedFilter::exact('$allowedFilter'),";
-        }
-
-        return  "[". $allowedFilterString ."
-        ]";
+        return __DIR__ . '../stubs/interface.stub';
     }
 
     /**
@@ -139,11 +100,8 @@ class MakeModelCommand extends Command
     public function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => $this->getBasePath(),
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('name')),
-            'FILLABLES' => $this->getFillables($this->option('fillables')),
-            'ALLOWED_FILTERS' => $this->getAllowedFilters($this->option('fillables')),
-            'TABLE_NAME' => $this->getTableName(),
+            'NAMESPACE'         => $this->getBasePath(),
+            'CLASS_NAME'        => $this->getSingularClassName($this->argument('name')),
         ];
     }
 
@@ -166,12 +124,13 @@ class MakeModelCommand extends Command
      * @param array $stubVariables
      * @return string|array|bool
      */
-    public function getStubContents($stub, array $stubVariables = []): string|array|bool
+    public function getStubContents($stub ,array $stubVariables = []): string|array|bool
     {
         $contents = file_get_contents($stub);
 
-        foreach ($stubVariables as $search => $replace) {
-            $contents = str_replace('$' . $search . '$', $replace, $contents);
+        foreach ($stubVariables as $search => $replace)
+        {
+            $contents = str_replace('$'.$search.'$' , $replace, $contents);
         }
 
         return $contents;
@@ -183,9 +142,9 @@ class MakeModelCommand extends Command
      *
      * @return string
      */
-    public function getSourceFilePath(): string
+    public function getSourceFilePath()
     {
-        return $this->getBasePath() . '\\' . $this->getBaseName() . '.php';
+        return $this->getBasePath() .'\\' . $this->getBaseName();
     }
 
     /**
@@ -201,12 +160,12 @@ class MakeModelCommand extends Command
     /**
      * Build the directory for the class if necessary.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     protected function makeDirectory(string $path)
     {
-        if (!$this->files->isDirectory($path)) {
+        if (! $this->files->isDirectory($path)) {
             $this->files->makeDirectory($path, 0777, true, true);
         }
 

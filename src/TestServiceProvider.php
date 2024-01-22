@@ -2,7 +2,7 @@
 
 namespace Gomaa\Test;
 
-use Gomaa\Test\Commands\MakeCrudCommand;
+use Gomaa\Test\commands\MakeCrudCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;

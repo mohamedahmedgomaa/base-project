@@ -1,28 +1,28 @@
 <?php
 
-namespace Gomaa\Test\Commands;
+namespace Gomaa\Test\commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Pluralizer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
 
-class MakeInterfaceCommand extends Command
+class MakeRepositoryCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:interface
-                                {name : The name of the Model.}';
+    protected $signature = 'crud:repository
+                            {name : The name of the model.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make an Interface Class';
+    protected $description = 'Make an Repository Class';
 
     /**
      * Filesystem instance
@@ -66,10 +66,18 @@ class MakeInterfaceCommand extends Command
      */
     public function getBasePath(): string
     {
-
         // Converts a singular word into a plural
         $plural_name = Str::of($this->argument('name'))->plural(5);
-        return 'App\\Http\\Modules\\'. $plural_name .'\\Interfaces';
+        return 'App\\Http\\Modules\\'. $plural_name .'\\Repositories';
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelPath(): string
+    {
+        $plural_name = Str::of($this->argument('name'))->plural(5);
+        return 'App\\Http\\Modules\\'. $plural_name .'\\Models\\'. $this->argument('name');
     }
 
     /**
@@ -77,7 +85,7 @@ class MakeInterfaceCommand extends Command
      */
     public function getBaseName(): string
     {
-        return $this->getSingularClassName($this->argument('name')) . 'Interface.php';
+        return $this->getSingularClassName($this->argument('name')) . 'Repository.php';
     }
 
     /**
@@ -87,7 +95,7 @@ class MakeInterfaceCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/interface.stub';
+        return __DIR__ . '../stubs/new_repository.stub';
     }
 
     /**
@@ -101,7 +109,9 @@ class MakeInterfaceCommand extends Command
     {
         return [
             'NAMESPACE'         => $this->getBasePath(),
-            'CLASS_NAME'        => $this->getSingularClassName($this->argument('name')),
+            'CLASS_NAME'        => $this->getSingularClassName($this->argument('name')) . 'Repository',
+            'MODEL_NAME'        => $this->getSingularClassName($this->argument('name')),
+            'MODEL_PATH'        => $this->getModelPath(),
         ];
     }
 

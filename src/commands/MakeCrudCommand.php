@@ -1,11 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Commands;
+namespace Gomaa\Test\commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Pluralizer;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 
 class MakeCrudCommand extends Command
 {

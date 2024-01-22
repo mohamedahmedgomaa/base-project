@@ -1,28 +1,29 @@
 <?php
 
-namespace Gomaa\Test\Commands;
+namespace Gomaa\Test\commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Pluralizer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
 
-class MakeRepositoryCommand extends Command
+class MakeRequestCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:repository
-                            {name : The name of the model.}';
+    protected $signature = 'crud:request
+                            {name : The name of the model.}
+                            {--request-action= : Field name request action. example (Create) || (Update)|| (Delete)|| (Show)|| (List)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make an Repository Class';
+    protected $description = 'Make an Request Class';
 
     /**
      * Filesystem instance
@@ -68,16 +69,7 @@ class MakeRepositoryCommand extends Command
     {
         // Converts a singular word into a plural
         $plural_name = Str::of($this->argument('name'))->plural(5);
-        return 'App\\Http\\Modules\\'. $plural_name .'\\Repositories';
-    }
-
-    /**
-     * @return string
-     */
-    public function getModelPath(): string
-    {
-        $plural_name = Str::of($this->argument('name'))->plural(5);
-        return 'App\\Http\\Modules\\'. $plural_name .'\\Models\\'. $this->argument('name');
+        return 'App\\Http\\Modules\\'. $plural_name .'\\Requests';
     }
 
     /**
@@ -85,7 +77,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getBaseName(): string
     {
-        return $this->getSingularClassName($this->argument('name')) . 'Repository.php';
+        return $this->option('request-action') . $this->getSingularClassName($this->argument('name')) . 'Request.php';
     }
 
     /**
@@ -95,7 +87,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '../stubs/new_repository.stub';
+        return __DIR__ . '../stubs/new_request.stub';
     }
 
     /**
@@ -109,9 +101,7 @@ class MakeRepositoryCommand extends Command
     {
         return [
             'NAMESPACE'         => $this->getBasePath(),
-            'CLASS_NAME'        => $this->getSingularClassName($this->argument('name')) . 'Repository',
-            'MODEL_NAME'        => $this->getSingularClassName($this->argument('name')),
-            'MODEL_PATH'        => $this->getModelPath(),
+            'CLASS_NAME'        => $this->option('request-action') . $this->getSingularClassName($this->argument('name')) . 'Request',
         ];
     }
 
