@@ -4,8 +4,10 @@ namespace Gomaa\Test;
 
 use Gomaa\Test\commands\MakeControllerCommand;
 use Gomaa\Test\commands\MakeCrudCommand;
+use Gomaa\Test\commands\MakeInterfaceCommand;
 use Gomaa\Test\commands\MakeModelCommand;
 use Gomaa\Test\commands\MakeRepositoryCommand;
+use Gomaa\Test\commands\MakeRequestCommand;
 use Gomaa\Test\commands\MakeServiceCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -25,6 +27,8 @@ class TestServiceProvider extends ServiceProvider
                 MakeServiceCommand::class,
                 MakeRepositoryCommand::class,
                 MakeControllerCommand::class,
+                MakeInterfaceCommand::class,
+                MakeRequestCommand::class,
                 MakeCrudCommand::class,
             ]);
         }
@@ -37,12 +41,16 @@ class TestServiceProvider extends ServiceProvider
         $this->app->bind('command.crud:service', MakeServiceCommand::class);
         $this->app->bind('command.crud:repository', MakeRepositoryCommand::class);
         $this->app->bind('command.crud:controller', MakeControllerCommand::class);
+        $this->app->bind('command.crud:interface', MakeInterfaceCommand::class);
+        $this->app->bind('command.crud:request', MakeRequestCommand::class);
         $this->commands([
             'command.crud:all',
             'command.crud:model',
             'command.crud:service',
             'command.crud:repository',
             'command.crud:controller',
+            'command.crud:interface',
+            'command.crud:request',
         ]);
     }
 
