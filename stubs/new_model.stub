@@ -1,0 +1,33 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Http\Base\Models\BaseModel;
+
+class $CLASS_NAME$ extends BaseModel
+{
+    use HasFactory;
+
+    protected $table = '$TABLE_NAME$';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = $FILLABLES$;
+
+    public static function getAllowedFilters(): array
+    {
+        return $ALLOWED_FILTERS$;
+    }
+
+
+    public static function getDefaultSort()
+    {
+        return '-created_at';
+    }
+
+}

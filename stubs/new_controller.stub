@@ -1,0 +1,31 @@
+<?php
+
+namespace $NAMESPACE$;
+
+
+use App\Http\Base\Controllers\BaseApiController;
+use App\Http\Modules\$CLASS_PLURAL$\Requests\Create$MODEL_NAME$Request;
+use App\Http\Modules\$CLASS_PLURAL$\Requests\Delete$MODEL_NAME$Request;
+use App\Http\Modules\$CLASS_PLURAL$\Requests\List$MODEL_NAME$Request;
+use App\Http\Modules\$CLASS_PLURAL$\Requests\Show$MODEL_NAME$Request;
+use App\Http\Modules\$CLASS_PLURAL$\Requests\Update$MODEL_NAME$Request;
+use $SERVICE_PATH$;
+
+class $CLASS_NAME$ extends BaseApiController
+{
+
+    /**
+     * @param $SERVICE_NAME$ $service
+     */
+    public function __construct($SERVICE_NAME$ $service)
+    {
+        parent::__construct($service,[
+            'index' => List$MODEL_NAME$Request::class,
+            'show' => Show$MODEL_NAME$Request::class,
+            'store' => Create$MODEL_NAME$Request::class,
+            'update' => Update$MODEL_NAME$Request::class,
+            'destroy' => Delete$MODEL_NAME$Request::class,
+        ]);
+    }
+
+}

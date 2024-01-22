@@ -87,7 +87,7 @@ class MakeRequestCommand extends Command
      */
     public function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/new_request.stub';
+        return __DIR__ . '../stubs/new_request.stub';
     }
 
     /**

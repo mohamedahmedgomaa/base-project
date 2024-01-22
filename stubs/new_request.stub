@@ -1,0 +1,20 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Http\Base\Requests\BaseRequest;
+
+class $CLASS_NAME$ extends BaseRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+        ];
+    }
+
+}

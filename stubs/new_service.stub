@@ -1,0 +1,19 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Http\Base\Services\BaseApiService;
+use $REPOSITORY_PATH$;
+
+class $CLASS_NAME$ extends BaseApiService
+{
+
+    /**
+     * @param $REPOSITORY_NAME$ $repository
+     */
+    public function __construct($REPOSITORY_NAME$ $repository)
+    {
+        parent::__construct($repository);
+    }
+
+}
