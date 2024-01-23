@@ -17,10 +17,12 @@ class TestServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->offerPublishing();
+//        $this->offerPublishing();
 
         // php artisan crud:all ExampleCommand "id,name"
         if ($this->app->runningInConsole()) {
+            $this->registerMigrations();
+
             $this->commands([
                 MakeCrudCommand::class,
                 MakeModelCommand::class,
@@ -51,6 +53,11 @@ class TestServiceProvider extends ServiceProvider
             'command.crud:interface',
             'command.crud:request',
         ]);
+    }
+
+    protected function registerMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     protected function offerPublishing()
