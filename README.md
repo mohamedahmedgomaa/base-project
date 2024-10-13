@@ -6,7 +6,11 @@
 ## About Project Package Test
 Project Package Test
 
+- [My Package in Packagist](https://packagist.org/users/mohamedahmedgomaa/packages).
 - [Learning Create Simple Package](https://medium.com/@francismacugay/build-your-own-laravel-package-in-10-minutes-using-composer-867e8ef875dd).
+
+## How To Create Package In Project :
+- composer require gomaa/test
 
 
 ## Update Project Package Test
