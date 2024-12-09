@@ -13,23 +13,11 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('bundle_installment_schedules', function (Blueprint $table) {
+        Schema::create('test_migrations_create', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
-            $table->integer('reference')->default(1);
-            $table->integer('quantity')->default(1);
-
-            $table->string('duration_type')->default("week")->comment('day, week, month, year');
-            $table->tinyInteger('duration_value')->comment("number of days or months or years");
-
-            $table->unsignedDecimal('subtotal_without_discount', 10, 2)->default(0.0);
-            $table->unsignedDecimal('subtotal', 10, 2)->default(0.0);
-            $table->unsignedDecimal('vat_percentage', 10, 2)->default(0.0);
-            $table->unsignedDecimal('vat_amount', 10, 2)->default(0.0);
-            $table->unsignedDecimal('total', 10, 2)->default(0.0);
-
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
