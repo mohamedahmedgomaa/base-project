@@ -3,7 +3,7 @@
 namespace $NAMESPACE$;
 
 
-use App\Http\Base\Controllers\BaseApiController;
+use Gomaa\Test\Base\Controllers\BaseApiController;
 use App\Http\Modules\$CLASS_PLURAL$\Requests\Create$MODEL_NAME$Request;
 use App\Http\Modules\$CLASS_PLURAL$\Requests\Delete$MODEL_NAME$Request;
 use App\Http\Modules\$CLASS_PLURAL$\Requests\List$MODEL_NAME$Request;

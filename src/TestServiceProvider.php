@@ -69,7 +69,7 @@ class TestServiceProvider extends ServiceProvider
 
         $this->publishes(
             [
-                __DIR__ . '/../database/migrations/create_permission_tables.php.stub' =>
+                __DIR__ . '/../database/migrations/create_permission_tables.php' =>
                     $this->getMigrationFileName('create_permission_tables.php')
             ], 'permission-migrations');
 

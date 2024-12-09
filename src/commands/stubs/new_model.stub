@@ -4,7 +4,7 @@ namespace $NAMESPACE$;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\QueryBuilder\AllowedFilter;
-use App\Http\Base\Models\BaseModel;
+use Gomaa\Test\Base\Models\BaseModel;
 
 class $CLASS_NAME$ extends BaseModel
 {
