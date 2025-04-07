@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-use Gomaa\Test\Base\Services\BaseApiService;
+use Gomaa\Base\Base\Services\BaseApiService;
 use $REPOSITORY_PATH$;
 
 class $CLASS_NAME$ extends BaseApiService

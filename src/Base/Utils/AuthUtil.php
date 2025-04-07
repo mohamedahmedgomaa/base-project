@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Utils;
+namespace Gomaa\Base\Base\Utils;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;

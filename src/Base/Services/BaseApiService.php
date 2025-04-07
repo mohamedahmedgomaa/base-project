@@ -1,13 +1,13 @@
 <?php
 
-namespace Gomaa\Test\Base\Services;
+namespace Gomaa\Base\Base\Services;
 
-use Gomaa\Test\Base\Repositories\BaseApiRepository;
-use Gomaa\Test\Base\Repositories\BaseRepository;
-use Gomaa\Test\Base\Requests\BaseRequest;
-use Gomaa\Test\Base\Responses\ApiResponse;
-use Gomaa\Test\Base\Utils\AuthUtil;
-use Gomaa\Test\Base\Utils\DataUtil;
+use Gomaa\Base\Base\Repositories\BaseApiRepository;
+use Gomaa\Base\Base\Repositories\BaseRepository;
+use Gomaa\Base\Base\Requests\BaseRequest;
+use Gomaa\Base\Base\Responses\ApiResponse;
+use Gomaa\Base\Base\Utils\AuthUtil;
+use Gomaa\Base\Base\Utils\DataUtil;
 use Illuminate\Http\JsonResponse;
 
 /*

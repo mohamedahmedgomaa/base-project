@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Filters;
+namespace Gomaa\Base\Base\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Filters\Filter;

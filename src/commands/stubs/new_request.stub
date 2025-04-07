@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-use Gomaa\Test\Base\Requests\BaseRequest;
+use Gomaa\Base\Base\Requests\BaseRequest;
 
 class $CLASS_NAME$ extends BaseRequest
 {

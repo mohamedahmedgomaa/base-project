@@ -1,8 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Base\Responses;
+namespace Gomaa\Base\Base\Responses;
 
-use Gomaa\Test\Base\Responses\HTTPCode;
+use Gomaa\Base\Base\Responses\HTTPCode;
 use Illuminate\Http\JsonResponse;
 use function response;
 

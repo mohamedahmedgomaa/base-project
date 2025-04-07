@@ -1,8 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Base\Repositories;
+namespace Gomaa\Base\Base\Repositories;
 
-use Gomaa\Test\Base\Models\BaseModel;
+use Gomaa\Base\Base\Models\BaseModel;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class BaseApiRepository extends BaseRepository implements RepositoryInterface

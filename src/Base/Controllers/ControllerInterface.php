@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Controllers;
+namespace Gomaa\Base\Base\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

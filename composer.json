@@ -12,12 +12,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Gomaa\\Test\\": "src/"
+            "Gomaa\\Base\\": "src/"
         }
     },
     "laravel": {
         "providers": [
-            "Gomaa\\Test\\TestServiceProvider"
+            "Gomaa\\Base\\TestServiceProvider"
         ]
     },
     "require": {}

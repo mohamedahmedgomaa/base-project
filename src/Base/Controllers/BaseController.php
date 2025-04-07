@@ -1,9 +1,9 @@
 <?php
 
-namespace Gomaa\Test\Base\Controllers;
+namespace Gomaa\Base\Base\Controllers;
 
-use Gomaa\Test\Base\Services\BaseApiService;
-use Gomaa\Test\Base\Responses\HTTPCode;
+use Gomaa\Base\Base\Services\BaseApiService;
+use Gomaa\Base\Base\Responses\HTTPCode;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

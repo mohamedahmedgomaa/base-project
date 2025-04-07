@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Gomaa\Test\Base\Responses;
+namespace Gomaa\Base\Base\Responses;
 
 class HTTPCode{
     const Success = 200;

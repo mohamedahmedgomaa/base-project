@@ -1,14 +1,14 @@
 <?php
 
-namespace Gomaa\Test;
+namespace Gomaa\Base;
 
-use Gomaa\Test\commands\MakeControllerCommand;
-use Gomaa\Test\commands\MakeCrudCommand;
-use Gomaa\Test\commands\MakeInterfaceCommand;
-use Gomaa\Test\commands\MakeModelCommand;
-use Gomaa\Test\commands\MakeRepositoryCommand;
-use Gomaa\Test\commands\MakeRequestCommand;
-use Gomaa\Test\commands\MakeServiceCommand;
+use Gomaa\Base\commands\MakeControllerCommand;
+use Gomaa\Base\commands\MakeCrudCommand;
+use Gomaa\Base\commands\MakeInterfaceCommand;
+use Gomaa\Base\commands\MakeModelCommand;
+use Gomaa\Base\commands\MakeRepositoryCommand;
+use Gomaa\Base\commands\MakeRequestCommand;
+use Gomaa\Base\commands\MakeServiceCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;

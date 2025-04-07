@@ -1,8 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Base\Services;
+namespace Gomaa\Base\Base\Services;
 
-use Gomaa\Test\Base\Requests\BaseRequest;
+use Gomaa\Base\Base\Requests\BaseRequest;
 use Illuminate\Http\JsonResponse;
 
 interface ServiceInterface

@@ -1,8 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Base\Services;
+namespace Gomaa\Base\Base\Services;
 
-use Gomaa\Test\Base\Responses\ApiResponse;
+use Gomaa\Base\Base\Responses\ApiResponse;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;

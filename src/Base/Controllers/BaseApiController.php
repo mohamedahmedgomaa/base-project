@@ -1,8 +1,8 @@
 <?php
 
-namespace Gomaa\Test\Base\Controllers;
+namespace Gomaa\Base\Base\Controllers;
 
-use Gomaa\Test\Base\Services\BaseApiService;
+use Gomaa\Base\Base\Services\BaseApiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

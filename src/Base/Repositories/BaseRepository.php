@@ -1,9 +1,9 @@
 <?php
 
-namespace Gomaa\Test\Base\Repositories;
+namespace Gomaa\Base\Base\Repositories;
 
-use Gomaa\Test\Base\Utils\AuthUtil;
-use Gomaa\Test\Base\Utils\DataUtil;
+use Gomaa\Base\Base\Utils\AuthUtil;
+use Gomaa\Base\Base\Utils\DataUtil;
 
 /*
  * This class Will do:

@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Requests;
+namespace Gomaa\Base\Base\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

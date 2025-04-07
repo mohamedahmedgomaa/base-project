@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Utils;
+namespace Gomaa\Base\Base\Utils;
 
 trait DataUtil
 {

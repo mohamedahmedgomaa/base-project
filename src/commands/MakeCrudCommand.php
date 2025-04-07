@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\commands;
+namespace Gomaa\Base\commands;
 
 use Illuminate\Console\Command;
 

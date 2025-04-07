@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Networks;
+namespace Gomaa\Base\Base\Networks;
 
 use MyCLabs\Enum\Enum;
 class HttpCode extends Enum

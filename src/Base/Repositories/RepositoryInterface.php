@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Repositories;
+namespace Gomaa\Base\Base\Repositories;
 
 interface  RepositoryInterface
 {

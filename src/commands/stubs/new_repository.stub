@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-use Gomaa\Test\Base\Repositories\BaseApiRepository;
+use Gomaa\Base\Base\Repositories\BaseApiRepository;
 use $MODEL_PATH$;
 
 class $CLASS_NAME$ extends BaseApiRepository

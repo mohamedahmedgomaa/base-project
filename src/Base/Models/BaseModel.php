@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Models;
+namespace Gomaa\Base\Base\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

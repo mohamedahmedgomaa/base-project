@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test\Base\Networks;
+namespace Gomaa\Base\Base\Networks;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response as HttpResponse;

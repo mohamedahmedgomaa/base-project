@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Test;
+namespace Gomaa\Base;
 
 class Greet
 {
