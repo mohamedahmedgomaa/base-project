@@ -1,5 +1,5 @@
 {
-    "name": "gomaa/test",
+    "name": "gomaa/base",
     "description": "Greet - A simple Package Base",
     "type": "library",
     "license": "MIT",
