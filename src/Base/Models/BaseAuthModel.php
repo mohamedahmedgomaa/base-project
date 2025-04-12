@@ -87,7 +87,7 @@ class BaseAuthModel extends Authenticatable
 
     private function localTimezone($value = null)
     {
-        return $value ? Carbon::parse($value)->setTimezone(env("APP_TIMEZONE","UTC"))->toDateTimeString() : null;
+        return $value ? Carbon::parse($value)->setTimezone("UTC")->toDateTimeString() : null;
     }
 
     public function getCreatedAtAttribute($value)
