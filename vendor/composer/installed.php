@@ -3,7 +3,7 @@
         'name' => 'gomaa/base',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'af41a7160bf9db269d2572409c3b679bc595fc5a',
+        'reference' => 'a2bf950e4ad4b2a77a9636ef608df94b05a0fbc0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'gomaa/base' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'af41a7160bf9db269d2572409c3b679bc595fc5a',
+            'reference' => 'a2bf950e4ad4b2a77a9636ef608df94b05a0fbc0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
