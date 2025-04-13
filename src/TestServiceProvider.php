@@ -21,8 +21,6 @@ class TestServiceProvider extends ServiceProvider
 
         // php artisan crud:all ExampleCommand "id,name"
         if ($this->app->runningInConsole()) {
-            $this->registerMigrations();
-
             $this->commands([
                 MakeCrudCommand::class,
                 MakeModelCommand::class,
@@ -53,26 +51,6 @@ class TestServiceProvider extends ServiceProvider
             'command.crud:interface',
             'command.crud:request',
         ]);
-    }
-
-    protected function registerMigrations()
-    {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-    }
-
-    protected function offerPublishing()
-    {
-        if (!function_exists('config_path')) {
-            // function not available and 'publish' not relevant in Lumen
-            return;
-        }
-
-        $this->publishes(
-            [
-                __DIR__ . '/../database/migrations/create_permission_tables.php' =>
-                    $this->getMigrationFileName('create_permission_tables.php')
-            ], 'permission-migrations');
-
     }
 
     /**
