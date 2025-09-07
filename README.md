@@ -1,32 +1,101 @@
-# Gomaa
+# Gomaa/Base
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/gomaa/base.svg)](https://packagist.org/packages/gomaa/base)
+[![Total Downloads](https://img.shields.io/packagist/dt/gomaa/base.svg)](https://packagist.org/packages/gomaa/base)
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+`gomaa/base` is a Laravel package that provides **base commands and helpers** to speed up development.  
+It helps you quickly generate **DTOs, Mappers, Services, and more** following clean architecture principles.
 
-## About Project Package Test
-Project Package Test
+---
 
-- [My Package in Packagist](https://packagist.org/users/mohamedahmedgomaa/packages).
-- [Learning Create Simple Package](https://medium.com/@francismacugay/build-your-own-laravel-package-in-10-minutes-using-composer-867e8ef875dd).
+## 🚀 Installation
 
-## How To Create Package In Project :
-- composer require gomaa/test
+Install the package via Composer:
 
+```bash
+composer require gomaa/base
 
-## Update Project Package Test
-Update
+## ⚡ Available Commands
 
-### after edit everything in the code :
-- composer update.
-- comment and push code.
-- git tag "number version" Ex : 1.0.1.
-- - git tag 1.0.1.
-- -  git push -u origin --tags.
+### 1. Generate CRUD Files
 
+You can quickly generate a full CRUD module (Model, Migration, Controller, Service, Routes, etc.) using:
 
-## Project Two 
+```bash
+php artisan crud:all
 
-- composer update
-- config app file : add to providers 
-- Gomaa\Test\TestServiceProvider::class
--  php artisan vendor:publish --provider="Gomaa\Test\TestServiceProvider" .
+This will create a full module for the **Post** entity with the following structure:
+
+```json
+{
+  "Post": {
+    "fillables": {
+      "id": "int",
+      "title": "string",
+      "content": "text",
+      "user_id": "unsignedBigInteger",
+      "is_published": "boolean"
+    }
+  }
+}
+
+### 2. Route Registration
+
+Make sure your `routes/api.php` includes the following snippet to automatically load all module routes:
+
+```php
+foreach (glob(base_path('app/Http/Modules').'/*/Route/index.php') as $routeFile) {
+    require $routeFile;
+}
+This ensures that all generated CRUD routes are registered automatically.
+
+### ⚡ What `crud:all Post` Generates
+
+Running the command:
+
+```bash
+php artisan crud:all Post
+
+Will automatically generate a full module for the Post entity, including:
+
+Model (with defined $fillable properties)
+Migration (with proper schema fields)
+Controller (with CRUD endpoints)
+Service (for business logic)
+Route (auto-registered in routes/api.php)
+Mapper (to map between Model ↔ DTO)
+DTO (Data Transfer Object for the entity)
+Requests (Form Request classes for Create, Update, Show, etc.)
+Example Post definition
+
+{
+  "Post": {
+    "fillables": {
+      "id": "int",
+      "title": "string",
+      "content": "text",
+      "user_id": "unsignedBigInteger",
+      "is_published": "boolean"
+    }
+  }
+}
+
+## 🛠 Requirements
+
+- PHP >= 8.1  
+- Laravel >= 10.x  
+- Composer >= 2.x  
+
+## 🤝 Contributing
+
+Pull requests are welcome.  
+For major changes, please open an issue first to discuss what you would like to change.
+
+If you're contributing, don't forget to run the following:
+
+```bash
+composer update
+git commit -m "Your changes"
+git push origin main
+git tag 1.0.1
+git push -u origin --tags
