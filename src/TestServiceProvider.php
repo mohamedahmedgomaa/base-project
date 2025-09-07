@@ -4,10 +4,14 @@ namespace Gomaa\Base;
 
 use Gomaa\Base\commands\MakeControllerCommand;
 use Gomaa\Base\commands\MakeCrudCommand;
+use Gomaa\Base\commands\MakeDtoCommand;
 use Gomaa\Base\commands\MakeInterfaceCommand;
+use Gomaa\Base\commands\MakeMapperCommand;
+use Gomaa\Base\commands\MakeMigrationCommand;
 use Gomaa\Base\commands\MakeModelCommand;
 use Gomaa\Base\commands\MakeRepositoryCommand;
 use Gomaa\Base\commands\MakeRequestCommand;
+use Gomaa\Base\Commands\MakeRouteCommand;
 use Gomaa\Base\commands\MakeServiceCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -17,45 +21,36 @@ class TestServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-//        $this->offerPublishing();
-
-        // php artisan crud:all ExampleCommand "id,name"
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MakeCrudCommand::class,
                 MakeModelCommand::class,
+                MakeRouteCommand::class,
                 MakeServiceCommand::class,
                 MakeRepositoryCommand::class,
                 MakeControllerCommand::class,
                 MakeInterfaceCommand::class,
                 MakeRequestCommand::class,
+                MakeMigrationCommand::class,
+                MakeDtoCommand::class,
+                MakeMapperCommand::class,
             ]);
         }
     }
 
     public function register()
     {
-        $this->app->bind('command.crud:all', MakeCrudCommand::class);
-        $this->app->bind('command.crud:model', MakeModelCommand::class);
-        $this->app->bind('command.crud:service', MakeServiceCommand::class);
-        $this->app->bind('command.crud:repository', MakeRepositoryCommand::class);
-        $this->app->bind('command.crud:controller', MakeControllerCommand::class);
-        $this->app->bind('command.crud:interface', MakeInterfaceCommand::class);
-        $this->app->bind('command.crud:request', MakeRequestCommand::class);
-        $this->commands([
-            'command.crud:all',
-            'command.crud:model',
-            'command.crud:service',
-            'command.crud:repository',
-            'command.crud:controller',
-            'command.crud:interface',
-            'command.crud:request',
-        ]);
+       // نربط الـ alias "files" بالـ Filesystem class
+        $this->app->singleton('files', function ($app) {
+            return new Filesystem;
+        });
+
+        // ولو حابب تخلي الـ class نفسه كمان
+        $this->app->singleton(Filesystem::class, function ($app) {
+            return new Filesystem;
+        });
     }
 
-    /**
-     * Returns existing migration file if found, else uses the current timestamp.
-     */
     protected function getMigrationFileName($migrationFileName): string
     {
         $timestamp = date('Y_m_d_His');

@@ -9,43 +9,19 @@ use Illuminate\Support\Str;
 
 class MakeModelCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'crud:model
                             {name : The name of the model.}
-                            {--fillables= : Field names for the form & migration. example (id,name)}
-                            ';
+                            {--fillables= : Field names for the form & migration. example (id,name)}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Make an Model Class';
-
-    /**
-     * Filesystem instance
-     * @var Filesystem
-     */
+    protected $description = 'Make a Model Class with relationships';
     protected $files;
 
-    /**
-     * Create a new command instance.
-     * @param Filesystem $files
-     */
     public function __construct(Filesystem $files)
     {
         parent::__construct();
-
         $this->files = $files;
     }
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $path = $this->getSourceFilePath();
@@ -56,116 +32,98 @@ class MakeModelCommand extends Command
 
         if (!$this->files->exists($path)) {
             $this->files->put($path, $contents);
-            $this->info("File : {$path} created");
+            $this->info("✅ File : {$path} created");
         } else {
-            $this->info("File : {$path} already exits");
+            $this->info("⚠️ File : {$path} already exists");
         }
 
+        // ✅ Add belongsTo use statements
+        $this->addBelongsToUses();
+
+        // ✅ Generate inverse relations (hasMany)
+        $this->generateInverseRelations();
     }
 
-    /**
-     * @return string
-     */
     public function getBasePath(): string
     {
-        // Converts a singular word into a plural
         $plural_name = Str::of($this->argument('name'))->plural(5);
         return 'App\\Http\\Modules\\'. $plural_name .'\\Models';
     }
 
-    /**
-     * @return string
-     */
     public function getBaseName(): string
     {
         return $this->getSingularClassName($this->argument('name'));
     }
 
-    /**
-     * @return string
-     */
     public function getTableName(): string
     {
         return Str::plural(Str::snake($this->argument('name')));
     }
 
-    /**
-     * Return the stub file path
-     * @return string
-     *
-     */
     public function getStubPath(): string
     {
         return __DIR__ . '/stubs/new_model.stub';
     }
 
-    /**
-     * add fillables
-     * @param string $fillables
-     * @return string
-     */
     public function getFillables(string $fillables): string
     {
-        $arrayFillables = explode(',', $fillables);
+        $clean = str_replace(['[', ']', '"', "'"], '', $fillables);
+        $arrayFillables = array_map('trim', explode(',', $clean));
         $fillable = implode("', '", $arrayFillables);
         return "['$fillable']";
     }
 
-    /**
-     * add fillables in Filters
-     * @param string $fillables
-     * @return string
-     */
     public function getAllowedFilters(string $fillables): string
     {
-        $allowedFilterString = null;
-        $allowedFilters = explode(',', $fillables);
-        foreach ($allowedFilters as $allowedFilter) {
-            $allowedFilterString .= "
-            AllowedFilter::exact('$allowedFilter'),";
-        }
-
-        return  "[". $allowedFilterString ."
-        ]";
+        $clean = str_replace(['[', ']', '"', "'"], '', $fillables);
+        $allowedFilters = array_map('trim', explode(',', $clean));
+        $allowedFilterString = collect($allowedFilters)
+            ->map(fn($f) => "AllowedFilter::exact('$f')")
+            ->implode(",\n            ");
+        return "[\n            " . $allowedFilterString . "\n        ]";
     }
 
-    /**
-     **
-     * Map the stub variables present in stub to its value
-     *
-     * @return array
-     *
-     */
+    public function getRelationships(string $fillables): string
+    {
+        $clean = str_replace(['[', ']', '"', "'"], '', $fillables);
+        $fields = array_map('trim', explode(',', $clean));
+        $methods = [];
+
+        foreach ($fields as $field) {
+            if (Str::endsWith($field, '_id')) {
+                $related = ucfirst(Str::camel(Str::beforeLast($field, '_id')));
+                $methodName = Str::camel($related);
+
+                $methods[] = <<<EOT
+
+        public function {$methodName}()
+        {
+            return \$this->belongsTo({$related}::class, '{$field}');
+        }
+    EOT;
+            }
+        }
+
+        return implode("\n", $methods);
+    }
+
     public function getStubVariables(): array
     {
         return [
             'NAMESPACE' => $this->getBasePath(),
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('name')),
+            'CLASS_NAME' => $this->getBaseName(),
             'FILLABLES' => $this->getFillables($this->option('fillables')),
             'ALLOWED_FILTERS' => $this->getAllowedFilters($this->option('fillables')),
             'TABLE_NAME' => $this->getTableName(),
+            'RELATIONSHIPS' => $this->getRelationships($this->option('fillables')),
         ];
     }
 
-    /**
-     * Get the stub path and the stub variables
-     *
-     * @return string|array|bool
-     *
-     */
     public function getSourceFile(): string|array|bool
     {
         return $this->getStubContents($this->getStubPath(), $this->getStubVariables());
     }
 
-
-    /**
-     * Replace the stub variables(key) with the desire value
-     *
-     * @param $stub
-     * @param array $stubVariables
-     * @return string|array|bool
-     */
     public function getStubContents($stub, array $stubVariables = []): string|array|bool
     {
         $contents = file_get_contents($stub);
@@ -175,35 +133,18 @@ class MakeModelCommand extends Command
         }
 
         return $contents;
-
     }
 
-    /**
-     * Get the full path of generate class
-     *
-     * @return string
-     */
     public function getSourceFilePath(): string
     {
         return $this->getBasePath() . '\\' . $this->getBaseName() . '.php';
     }
 
-    /**
-     * Return the Singular Capitalize Name
-     * @param $name
-     * @return string
-     */
     public function getSingularClassName($name)
     {
         return ucwords(Pluralizer::singular($name));
     }
 
-    /**
-     * Build the directory for the class if necessary.
-     *
-     * @param string $path
-     * @return string
-     */
     protected function makeDirectory(string $path)
     {
         if (!$this->files->isDirectory($path)) {
@@ -211,5 +152,93 @@ class MakeModelCommand extends Command
         }
 
         return $path;
+    }
+
+    /**
+     * ✅ Add missing use statements for belongsTo relations
+     */
+    protected function addBelongsToUses()
+    {
+        $fillables = $this->option('fillables');
+        $clean = str_replace(['[', ']', '"', "'"], '', $fillables);
+        $fields = array_map('trim', explode(',', $clean));
+        $path = $this->getSourceFilePath();
+
+        if (!$this->files->exists($path)) {
+            return;
+        }
+
+        $contents = $this->files->get($path);
+
+        foreach ($fields as $field) {
+            if (Str::endsWith($field, '_id')) {
+                $related = ucfirst(Str::camel(Str::beforeLast($field, '_id')));
+
+                $useStatement = "use App\\Http\\Modules\\" . Str::plural($related) . "\\Models\\" . $related . ";";
+                if (!str_contains($contents, $useStatement)) {
+                    $contents = preg_replace(
+                        '/(namespace\s+[^;]+;)(\s*)/m',
+                        "$1\n$useStatement\n",
+                        $contents,
+                        1
+                    );
+                }
+            }
+        }
+
+        $this->files->put($path, $contents);
+        $this->info("✅ BelongsTo use statements added in {$this->getBaseName()} model.");
+    }
+
+    /**
+     * ✅ Generate inverse relations (hasMany) in related models
+     */
+    protected function generateInverseRelations()
+    {
+        $fillables = $this->option('fillables');
+        $clean = str_replace(['[', ']', '"', "'"], '', $fillables);
+        $fields = array_map('trim', explode(',', $clean));
+
+        foreach ($fields as $field) {
+            if (Str::endsWith($field, '_id')) {
+                $related = ucfirst(Str::camel(Str::beforeLast($field, '_id')));
+                $relatedModelPath = base_path(
+                    'app/Http/Modules/' . Str::plural($related) . '/Models/' . $related . '.php'
+                );
+
+                $methodName = Str::camel(Str::plural($this->getBaseName()));
+
+                $relationMethod = <<<EOT
+
+        public function {$methodName}()
+        {
+            return \$this->hasMany({$this->getBaseName()}::class, '{$field}');
+        }
+    EOT;
+
+                if ($this->files->exists($relatedModelPath)) {
+                    $contents = $this->files->get($relatedModelPath);
+
+                    // ✅ Add use statement if missing
+                    $useStatement = "use App\\Http\\Modules\\" . Str::plural($this->getBaseName()) . "\\Models\\" . $this->getBaseName() . ";";
+                    if (!str_contains($contents, $useStatement)) {
+                        $contents = preg_replace(
+                            '/(namespace\s+[^;]+;)(\s*)/m',
+                            "$1\n$useStatement\n",
+                            $contents,
+                            1
+                        );
+                    }
+
+                    // ✅ Add hasMany method if missing
+                    if (!str_contains($contents, "function {$methodName}(")) {
+                        $contents = preg_replace('/}\s*$/', $relationMethod . "\n}", $contents);
+                    }
+
+                    $this->files->put($relatedModelPath, $contents);
+                    $this->info("✅ Added hasMany relation + use statement in {$related} model.");
+                }
+            }
+        }
     }
 }

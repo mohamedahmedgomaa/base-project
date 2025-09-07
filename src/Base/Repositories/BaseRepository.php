@@ -66,11 +66,15 @@ abstract class BaseRepository
 
 
         if ($this->isExists($attributes, self::pageNumber)) {
+            $requestedPage = (int) $attributes[self::pageNumber];
+            $perPage = $this->perPage($attributes);
 
-            $tempQuery = $query;
-            $records = $tempQuery->paginate($this->perPage($attributes));
-            if (count($records) == 0 && $records->lastPage() < $records->currentPage()) {
-                $records = $query->paginate($this->perPage($attributes), ['*'], 'page', $records->lastPage());
+            $records = $query->paginate($perPage, ['*'], 'page', $requestedPage);
+
+            if ($requestedPage > $records->lastPage()) {
+                $records = $query->paginate($perPage, ['*'], 'page', $requestedPage);
+
+                $records->setCollection(collect([]));
             }
 
             return $records;

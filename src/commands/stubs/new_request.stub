@@ -14,7 +14,7 @@ class $CLASS_NAME$ extends BaseRequest
     public function rules(): array
     {
         return [
+            $RULES$
         ];
     }
-
 }

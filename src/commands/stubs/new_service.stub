@@ -4,9 +4,13 @@ namespace $NAMESPACE$;
 
 use Gomaa\Base\Base\Services\BaseApiService;
 use $REPOSITORY_PATH$;
+use $MAPPER_PATH$;
+use $DTO_PATH$;
 
 class $CLASS_NAME$ extends BaseApiService
 {
+    protected string $dtoClass = $DTO_NAME$::class;
+    protected string $mapperClass = $MAPPER_NAME$::class;
 
     /**
      * @param $REPOSITORY_NAME$ $repository
@@ -15,5 +19,4 @@ class $CLASS_NAME$ extends BaseApiService
     {
         parent::__construct($repository);
     }
-
 }

@@ -32,29 +32,39 @@ trait ApiResponse
     {
         return $this->response(null, $data, null, $status);
     }
-
     public function responseWithItemsAndMeta($items): JsonResponse
     {
         if ($items instanceof \Illuminate\Pagination\LengthAwarePaginator) {
             $result["status"] = HTTPCode::Success;
-            $result["data"] = $items->items();
+
+            $result["data"] = collect($items->items())->map(fn ($model) => $this->mapToDto($model));
+
             $result["meta"] = [
-                "count" => $items->count(),
-                "total" => $items->total(), //(Not available when using simplePaginate)
-                "perPage" => $items->perPage(),
-                "currentPage" => $items->currentPage(),
-                "lastPage" => $items->lastPage(), // (Not available when using simplePaginate)
-                "hasMorePages" => $items->hasMorePages(),
-                "firstItem" => $items->firstItem(),
-                "lastItem" => $items->lastItem(),
-                "url" => $items->url($items->currentPage()),
-                "previousPageUrl" => $items->previousPageUrl(),
-                "nextPageUrl" => $items->nextPageUrl(),
+                "count"          => $items->count(),
+                "total"          => $items->total(),
+                "perPage"        => $items->perPage(),
+                "currentPage"    => $items->currentPage(),
+                "lastPage"       => $items->lastPage(),
+                "hasMorePages"   => $items->hasMorePages(),
+                "firstItem"      => $items->firstItem(),
+                "lastItem"       => $items->lastItem(),
+                "url"            => $items->url($items->currentPage()),
+                "previousPageUrl"=> $items->previousPageUrl(),
+                "nextPageUrl"    => $items->nextPageUrl(),
             ];
 
             return $this->result($result, HTTPCode::Success);
         }
+
         return $this->responseWithData($items);
+    }
+
+    protected function mapToDto($model)
+    {
+        $mapper = app($this->mapperClass);
+        $dto    = new $this->dtoClass();
+        $mapper->modelToDto($model, $dto);
+        return $dto;
     }
 
     public function responseWithDataAndList(string $resultKey, $resultValue, array $result = []): JsonResponse
@@ -82,33 +92,33 @@ trait ApiResponse
     // Data Error
     public function responseErrorThereIsNoData(): JsonResponse
     {
-        return self::responseErrorWithMessage(trans('There is no data found'));
+        return $this->responseErrorWithMessage(trans('There is no data found'));
     }
     public function responseErrorCanNotSaveData(): JsonResponse
     {
-        return self::responseErrorWithMessage(trans('Can not save this data'));
+        return $this->responseErrorWithMessage(trans('Can not save this data'));
     }
     public function responseErrorCanNotDeleteData(): JsonResponse
     {
-        return self::responseErrorWithMessage(trans('Can not delete this record'));
+        return $this->responseErrorWithMessage(trans('Can not delete this record'));
     }
 
 
     // Access Error
     public function responseUnauthorized(): JsonResponse
     {
-        return self::responseWithMessage(trans('Access Denied!'), HTTPCode::Unauthorized);
+        return $this->responseWithMessage(trans('Access Denied!'), HTTPCode::Unauthorized);
     }
     public function responseForbidden(): JsonResponse
     {
-        return self::responseWithMessage(trans('Access Denied!'), HTTPCode::Forbidden);
+        return $this->responseWithMessage(trans('Access Denied!'), HTTPCode::Forbidden);
     }
 
 
     // Catch Error
     public function responseCatchError($catchMessage): JsonResponse
     {
-        return self::responseWithMessage($catchMessage, HTTPCode::Exception);
+        return $this->responseWithMessage($catchMessage, HTTPCode::Exception);
     }
 
 
@@ -116,11 +126,11 @@ trait ApiResponse
     // Validator Error
     public function responseErrorWithValidatorObject($validatorError): JsonResponse
     {
-        return self::responseWithError($validatorError, HTTPCode::ValidatorError);
+        return $this->responseWithError($validatorError, HTTPCode::ValidatorError);
     }
     public function responseErrorWithValidatorKeyValue($Key, $value): JsonResponse
     {
-        return self::responseWithError([$Key => [$value]], HTTPCode::ValidatorError);
+        return $this->responseWithError([$Key => [$value]], HTTPCode::ValidatorError);
     }
 
 }

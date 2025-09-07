@@ -15,7 +15,8 @@ class MakeControllerCommand extends Command
      * @var string
      */
     protected $signature = 'crud:controller
-                            {name : The name of the Model.}';
+                        {name : The name of the Model.}
+                        {--fillables= : JSON encoded fillables fields.}';
 
     /**
      * The console command description.
@@ -54,8 +55,9 @@ class MakeControllerCommand extends Command
         $requestArray = ['Create', 'Update', 'Delete', 'Show', 'List'];
         foreach ($requestArray as $request) {
             $this->call('crud:request', [
-                'name' => $this->argument('name'),
-                '--request-action' => $request
+                'name'             => $this->argument('name'),
+                '--request-action' => $request,
+                '--fillables'      => json_encode($this->option('fillables') ? json_decode($this->option('fillables'), true) : []),
             ]);
         }
 
@@ -66,7 +68,7 @@ class MakeControllerCommand extends Command
             $this->files->put($path, $contents);
             $this->info("File : {$path} created");
         } else {
-            $this->info("File : {$path} already exits");
+            $this->info("File : {$path} already exists");
         }
 
     }

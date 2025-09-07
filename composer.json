@@ -15,10 +15,12 @@
             "Gomaa\\Base\\": "src/"
         }
     },
-    "laravel": {
-        "providers": [
-            "Gomaa\\Base\\TestServiceProvider"
-        ]
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gomaa\\Base\\TestServiceProvider"
+            ]
+        }
     },
     "require": {}
 }

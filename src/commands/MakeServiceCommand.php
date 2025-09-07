@@ -22,22 +22,23 @@ class MakeServiceCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Make an Service Class';
+    protected $description = 'Make a Service Class with Repository, Mapper, and DTO support';
 
     /**
-     * Filesystem instance
+     * Filesystem instance.
+     *
      * @var Filesystem
      */
     protected $files;
 
     /**
      * Create a new command instance.
+     *
      * @param Filesystem $files
      */
     public function __construct(Filesystem $files)
     {
         parent::__construct();
-
         $this->files = $files;
     }
 
@@ -47,7 +48,6 @@ class MakeServiceCommand extends Command
     public function handle()
     {
         $path = $this->getSourceFilePath();
-
         $this->makeDirectory(dirname($path));
 
         $contents = $this->getSourceFile();
@@ -56,9 +56,8 @@ class MakeServiceCommand extends Command
             $this->files->put($path, $contents);
             $this->info("File : {$path} created");
         } else {
-            $this->info("File : {$path} already exits");
+            $this->info("File : {$path} already exists");
         }
-
     }
 
     /**
@@ -66,7 +65,6 @@ class MakeServiceCommand extends Command
      */
     public function getBasePath(): string
     {
-        // Converts a singular word into a plural
         $plural_name = Str::of($this->argument('name'))->plural(5);
         return 'App\\Http\\Modules\\' . $plural_name . '\\Services';
     }
@@ -77,7 +75,25 @@ class MakeServiceCommand extends Command
     public function getRepositoryPath(): string
     {
         $plural_name = Str::of($this->argument('name'))->plural(5);
-        return 'App\\Http\\Modules\\' . $plural_name . '\\Repositories\\' . $this->argument('name') . 'Repository';
+        return 'App\\Http\\Modules\\' . $plural_name . '\\Repositories\\' . $this->getSingularClassName($this->argument('name')) . 'Repository';
+    }
+
+    /**
+     * @return string
+     */
+    public function getMapperPath(): string
+    {
+        $plural_name = Str::of($this->argument('name'))->plural(5);
+        return 'App\\Http\\Modules\\' . $plural_name . '\\Mappers\\' . $this->getSingularClassName($this->argument('name')) . 'Mapper';
+    }
+
+    /**
+     * @return string
+     */
+    public function getDtoPath(): string
+    {
+        $plural_name = Str::of($this->argument('name'))->plural(5);
+        return 'App\\Http\\Modules\\' . $plural_name . '\\Dtos\\' . $this->getSingularClassName($this->argument('name')) . 'Dto';
     }
 
     /**
@@ -89,9 +105,9 @@ class MakeServiceCommand extends Command
     }
 
     /**
-     * Return the stub file path
-     * @return string
+     * Return the stub file path.
      *
+     * @return string
      */
     public function getStubPath(): string
     {
@@ -99,38 +115,38 @@ class MakeServiceCommand extends Command
     }
 
     /**
-     **
-     * Map the stub variables present in stub to its value
+     * Map the stub variables present in stub to their values.
      *
      * @return array
-     *
      */
     public function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => $this->getBasePath(),
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('name')) . 'Service',
+            'NAMESPACE'       => $this->getBasePath(),
+            'CLASS_NAME'      => $this->getSingularClassName($this->argument('name')) . 'Service',
             'REPOSITORY_NAME' => $this->getSingularClassName($this->argument('name')) . 'Repository',
             'REPOSITORY_PATH' => $this->getRepositoryPath(),
+            'MAPPER_NAME'     => $this->getSingularClassName($this->argument('name')) . 'Mapper',
+            'MAPPER_PATH'     => $this->getMapperPath(),
+            'DTO_NAME'        => $this->getSingularClassName($this->argument('name')) . 'Dto',
+            'DTO_PATH'        => $this->getDtoPath(),
         ];
     }
 
     /**
-     * Get the stub path and the stub variables
+     * Get the stub path and the stub variables.
      *
      * @return string|array|bool
-     *
      */
     public function getSourceFile(): string|array|bool
     {
         return $this->getStubContents($this->getStubPath(), $this->getStubVariables());
     }
 
-
     /**
-     * Replace the stub variables(key) with the desire value
+     * Replace the stub variables(key) with the desired value.
      *
-     * @param $stub
+     * @param string $stub
      * @param array $stubVariables
      * @return string|array|bool
      */
@@ -143,11 +159,10 @@ class MakeServiceCommand extends Command
         }
 
         return $contents;
-
     }
 
     /**
-     * Get the full path of generate class
+     * Get the full path of generated class.
      *
      * @return string
      */
@@ -157,7 +172,8 @@ class MakeServiceCommand extends Command
     }
 
     /**
-     * Return the Singular Capitalize Name
+     * Return the Singular Capitalized Name.
+     *
      * @param $name
      * @return string
      */

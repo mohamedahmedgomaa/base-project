@@ -12,11 +12,6 @@ class $CLASS_NAME$ extends BaseModel
 
     protected $table = '$TABLE_NAME$';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = $FILLABLES$;
 
     public static function getAllowedFilters(): array
@@ -24,10 +19,10 @@ class $CLASS_NAME$ extends BaseModel
         return $ALLOWED_FILTERS$;
     }
 
-
     public static function getDefaultSort()
     {
         return '-created_at';
     }
 
+    $RELATIONSHIPS$
 }

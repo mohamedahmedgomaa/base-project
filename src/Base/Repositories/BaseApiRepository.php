@@ -8,9 +8,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 class BaseApiRepository extends BaseRepository implements RepositoryInterface
 {
     /**
-     * @var $model
+     * @var BaseModel $model
      */
-    protected $model;
+    protected BaseModel $model;
 
     /**
      * Get all with Base filter.

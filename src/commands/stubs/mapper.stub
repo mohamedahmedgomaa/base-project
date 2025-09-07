@@ -1,0 +1,58 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use App\Http\Modules\{{CLASS_NAME}}s\Models\{{CLASS_NAME}};
+use App\Http\Modules\{{CLASS_NAME}}s\Dtos\{{CLASS_NAME}}Dto;
+
+class {{CLASS_NAME}}Mapper
+{
+    /**
+     * Convert Model → DTO
+     */
+    public function modelToDto({{CLASS_NAME}} $model, ?{{CLASS_NAME}}Dto $dto = null): {{CLASS_NAME}}Dto
+    {
+        $dto = $dto ?? new {{CLASS_NAME}}Dto();
+
+{{DTO_FILL}}
+        return $dto;
+    }
+
+    /**
+     * Convert DTO → Model (للتخزين أو التحديث)
+     */
+    public function dtoToModel({{CLASS_NAME}}Dto $dto, ?{{CLASS_NAME}} $model = null): {{CLASS_NAME}}
+    {
+        $model = $model ?? new {{CLASS_NAME}}();
+
+{{MODEL_FILL}}
+        return $model;
+    }
+
+    /**
+     * Convert Array → DTO
+     */
+    public function arrayToDto(array $data): {{CLASS_NAME}}Dto
+    {
+        $dto = new {{CLASS_NAME}}Dto();
+
+        foreach ($data as $key => $value) {
+            $method = 'set' . \Illuminate\Support\Str::studly($key);
+            if (method_exists($dto, $method)) {
+                $dto->$method($value);
+            }
+        }
+
+        return $dto;
+    }
+
+    /**
+     * Convert DTO → Array
+     */
+    public function dtoToArray({{CLASS_NAME}}Dto $dto): array
+    {
+        return [
+{{ARRAY_FILL}}
+        ];
+    }
+}

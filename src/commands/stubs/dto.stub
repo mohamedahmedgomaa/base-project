@@ -1,0 +1,14 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+class {{CLASS_NAME}}Dto implements \JsonSerializable
+{
+{{PROPERTIES}}
+{{METHODS}}
+
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
+}
