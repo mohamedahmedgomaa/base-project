@@ -14,7 +14,7 @@ Install the package via Composer:
 
 ```bash
 composer require gomaa/base
-
+```
 ## ⚡ Available Commands
 
 ### 1. Generate CRUD Files
@@ -23,7 +23,7 @@ You can quickly generate a full CRUD module (Model, Migration, Controller, Servi
 
 ```bash
 php artisan crud:all
-
+```
 This will create a full module for the **Post** entity with the following structure:
 
 ```json
@@ -38,7 +38,7 @@ This will create a full module for the **Post** entity with the following struct
     }
   }
 }
-
+```
 ### 2. Route Registration
 
 Make sure your `routes/api.php` includes the following snippet to automatically load all module routes:
@@ -47,6 +47,7 @@ Make sure your `routes/api.php` includes the following snippet to automatically 
 foreach (glob(base_path('app/Http/Modules').'/*/Route/index.php') as $routeFile) {
     require $routeFile;
 }
+```
 This ensures that all generated CRUD routes are registered automatically.
 
 ### ⚡ What `crud:all Post` Generates
@@ -55,7 +56,7 @@ Running the command:
 
 ```bash
 php artisan crud:all Post
-
+```
 Will automatically generate a full module for the Post entity, including:
 
 Model (with defined $fillable properties)
@@ -68,6 +69,7 @@ DTO (Data Transfer Object for the entity)
 Requests (Form Request classes for Create, Update, Show, etc.)
 Example Post definition
 
+```json
 {
   "Post": {
     "fillables": {
@@ -79,7 +81,7 @@ Example Post definition
     }
   }
 }
-
+```
 ## 🛠 Requirements
 
 - PHP >= 8.1  
@@ -99,3 +101,4 @@ git commit -m "Your changes"
 git push origin main
 git tag 1.0.1
 git push -u origin --tags
+```
