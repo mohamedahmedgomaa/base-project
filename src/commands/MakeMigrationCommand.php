@@ -52,34 +52,40 @@ class MakeMigrationCommand extends Command
         $fillables = json_decode($this->option('fillables'), true) ?? [];
 
         $fields = '';
-        foreach ($fillables as $field => $type) {
-            // ✅ Skip id
-            if ($field === 'id') {
+        foreach ($fillables as $field => $definition) {
+            // ✅ تجاهل created_at و updated_at لأن timestamps() هتضيفهم
+            if (in_array($field, ['id', 'created_at', 'updated_at'])) {
                 continue;
             }
 
-            if (Str::endsWith($field, '_id')) {
-                $refTable = Str::plural(Str::beforeLast($field, '_id'));
+            $parts = explode('|', $definition);
+            $type = array_shift($parts);
 
-                $fields .= "\$table->unsignedBigInteger('{$field}');\n            ";
-                $fields .= "\$table->foreign('{$field}')->references('id')->on('{$refTable}')->onDelete('cascade');\n            ";
-            } else {
-                switch ($type) {
-                    case 'string':
-                        $fields .= "\$table->string('{$field}');\n            ";
-                        break;
-
-                    case 'text':
-                        $fields .= "\$table->text('{$field}');\n            ";
-                        break;
-
-                    case 'boolean':
-                        $fields .= "\$table->boolean('{$field}');\n            ";
-                        break;
-
-                    default:
-                        $fields .= "\$table->{$type}('{$field}');\n            ";
+            // enum
+            if (Str::startsWith($type, 'enum[')) {
+                $values = substr($type, 5, -1); // يجيب اللي جوه []
+                $values = explode(',', $values);
+                $fields .= "\$table->enum('{$field}', ['" . implode("','", $values) . "']);\n            ";
+            }
+            // decimal
+            elseif (Str::startsWith($type, 'decimal(')) {
+                preg_match('/decimal\((\d+),(\d+)\)/', $type, $matches);
+                $fields .= "\$table->decimal('{$field}', {$matches[1]}, {$matches[2]});\n            ";
+            }
+            // default boolean, nullable, unique
+            else {
+                $fields .= "\$table->{$type}('{$field}')";
+                foreach ($parts as $modifier) {
+                    if (Str::startsWith($modifier, 'default:')) {
+                        $val = substr($modifier, 8);
+                        $fields .= "->default({$val})";
+                    } elseif ($modifier === 'nullable') {
+                        $fields .= "->nullable()";
+                    } elseif ($modifier === 'unique') {
+                        $fields .= "->unique()";
+                    }
                 }
+                $fields .= ";\n            ";
             }
         }
 

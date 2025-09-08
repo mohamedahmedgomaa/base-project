@@ -24,20 +24,23 @@ You can quickly generate a full CRUD module (Model, Migration, Controller, Servi
 ```bash
 php artisan crud:all
 ```
-This will create a full module for the **Post** entity with the following structure:
+This will create a full module for the **Product** entity with the following structure:
 
 ```json
-{
-  "Post": {
+"Product": {
     "fillables": {
-      "id": "int",
-      "title": "string",
-      "content": "text",
-      "user_id": "unsignedBigInteger",
-      "is_published": "boolean"
+      "id": "bigIncrements",
+      "category_id": "unsignedBigInteger",
+      "name": "string",
+      "slug": "string|unique",
+      "description": "text|nullable",
+      "price": "decimal(10,2)",
+      "stock": "integer",
+      "is_active": "boolean|default:true",
+      "created_at": "timestamp",
+      "updated_at": "timestamp"
     }
-  }
-}
+  },
 ```
 ### 2. Route Registration
 
