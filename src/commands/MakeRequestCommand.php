@@ -112,29 +112,73 @@ class MakeRequestCommand extends Command
      */
     protected function generateRules(array $fillables, string $action): string
     {
-        // لو مش Create ولا Update → rules فاضية
         if (!in_array($action, ['Create', 'Update'])) {
             return '';
         }
 
-        $rules = [];
-        foreach ($fillables as $field => $type) {
-            if ($field === 'id') continue; // Skip id field
+        $excluded = ['id', 'created_at', 'updated_at', 'deleted_at', 'remember_token'];
+        $fillables = array_diff_key($fillables, array_flip($excluded));
 
-            // Create = required | Update = nullable
+        $rules = [];
+
+        foreach ($fillables as $field => $typeString) {
             $requiredOrNullable = $action === 'Create' ? 'required' : 'nullable';
 
-            $rule = match($type) {
-                'string'            => "'$field' => '$requiredOrNullable|string',",
-                'text'              => "'$field' => '$requiredOrNullable|string',",
-                'boolean'           => "'$field' => '$requiredOrNullable|boolean',",
-                'unsignedBigInteger'=> "'$field' => '$requiredOrNullable|integer|exists:" . Str::plural(str_replace('_id','',$field)) . ",id',",
-                default             => "'$field' => '$requiredOrNullable',",
-            };
+            $parts = explode('|', $typeString);
+            $fieldRules = [$requiredOrNullable];
 
-            $rules[] = "            ".$rule;
+            foreach ($parts as $part) {
+                $part = trim($part);
+
+                switch (true) {
+                    case $part === 'string':
+                    case $part === 'text':
+                        $fieldRules[] = 'string';
+                        break;
+
+                    case $part === 'boolean':
+                        $fieldRules[] = 'boolean';
+                        break;
+
+                    case str_contains($part, 'int'):
+                    case $part === 'unsignedBigInteger':
+                        $fieldRules[] = 'integer';
+                        break;
+
+                    case $part === 'timestamp':
+                    case $part === 'date':
+                        $fieldRules[] = 'date';
+                        break;
+
+                    case $part === 'unique':
+                        $table = Str::plural(str_replace('_id', '', $field));
+                        $fieldRules[] = "unique:$table,$field";
+                        break;
+
+                    case $part === 'nullable':
+                        $fieldRules[0] = 'nullable';
+                        break;
+
+                    case str_starts_with($part, 'enum:'):
+                        $values = str_replace('enum:', '', $part);
+                        $fieldRules[] = "in:$values";
+                        break;
+
+                    case str_starts_with($part, 'default:'):
+                        break;
+
+                    default:
+                        $fieldRules[] = $part;
+                        break;
+                }
+            }
+
+            $fieldRules = array_unique($fieldRules);
+            $rules[] = "            '$field' => '" . implode('|', $fieldRules) . "',";
         }
 
         return implode("\n", $rules);
     }
+
+
 }

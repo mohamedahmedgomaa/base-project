@@ -45,7 +45,7 @@ class MakeMapperCommand extends Command
 
     public function getClassPlural(): string
     {
-        return Str::of($this->argument('name'))->plural(5);
+        return Pluralizer::plural($this->argument('name'));
     }
 
     public function getStubPath(): string
@@ -75,11 +75,12 @@ class MakeMapperCommand extends Command
         }
 
         return [
-            'NAMESPACE'   => $this->getBasePath(),
-            'CLASS_NAME'  => $this->getSingularClassName($this->argument('name')),
-            'DTO_FILL'    => $dtoFill,
-            'MODEL_FILL'  => $modelFill,
-            'ARRAY_FILL'  => $arrayFill,
+            'NAMESPACE'       => $this->getBasePath(),
+            'CLASS_NAME'      => $this->getSingularClassName($this->argument('name')), // Category
+            'CLASS_PLURAL'    => $this->getClassPlural(), // Categories
+            'DTO_FILL'        => $dtoFill,
+            'MODEL_FILL'      => $modelFill,
+            'ARRAY_FILL'      => $arrayFill,
         ];
     }
 

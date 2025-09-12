@@ -13,6 +13,7 @@ class MakeMigrationCommand extends Command
                             {--fillables= : JSON encoded fillables for the migration.}';
 
     protected $description = 'Create a migration file for the given model';
+    protected static int $migrationCounter = 0;
 
     protected $files;
 
@@ -111,9 +112,15 @@ class MakeMigrationCommand extends Command
         return $contents;
     }
 
+
     public function getSourceFilePath(): string
     {
-        return database_path('migrations/' . date('Y_m_d_His') . '_create_' . $this->getTableName() . '_table.php');
+        $timestamp = date('Y_m_d_His', time() + self::$migrationCounter);
+        self::$migrationCounter++;
+
+        return database_path(
+            "migrations/{$timestamp}_create_{$this->getTableName()}_table.php"
+        );
     }
 
     public function getTableName(): string

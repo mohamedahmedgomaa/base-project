@@ -2,8 +2,8 @@
 
 namespace {{NAMESPACE}};
 
-use App\Http\Modules\{{CLASS_NAME}}s\Models\{{CLASS_NAME}};
-use App\Http\Modules\{{CLASS_NAME}}s\Dtos\{{CLASS_NAME}}Dto;
+use App\Http\Modules\{{CLASS_PLURAL}}\Models\{{CLASS_NAME}};
+use App\Http\Modules\{{CLASS_PLURAL}}\Dtos\{{CLASS_NAME}}Dto;
 
 class {{CLASS_NAME}}Mapper
 {
@@ -14,18 +14,18 @@ class {{CLASS_NAME}}Mapper
     {
         $dto = $dto ?? new {{CLASS_NAME}}Dto();
 
-{{DTO_FILL}}
+        {{DTO_FILL}}
         return $dto;
     }
 
     /**
-     * Convert DTO → Model (للتخزين أو التحديث)
+     * Convert DTO → Model
      */
     public function dtoToModel({{CLASS_NAME}}Dto $dto, ?{{CLASS_NAME}} $model = null): {{CLASS_NAME}}
     {
         $model = $model ?? new {{CLASS_NAME}}();
 
-{{MODEL_FILL}}
+        {{MODEL_FILL}}
         return $model;
     }
 
@@ -52,7 +52,7 @@ class {{CLASS_NAME}}Mapper
     public function dtoToArray({{CLASS_NAME}}Dto $dto): array
     {
         return [
-{{ARRAY_FILL}}
+            {{ARRAY_FILL}}
         ];
     }
 }
