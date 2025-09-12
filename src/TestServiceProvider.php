@@ -11,7 +11,7 @@ use Gomaa\Base\commands\MakeMigrationCommand;
 use Gomaa\Base\commands\MakeModelCommand;
 use Gomaa\Base\commands\MakeRepositoryCommand;
 use Gomaa\Base\commands\MakeRequestCommand;
-use Gomaa\Base\Commands\MakeRouteCommand;
+use Gomaa\Base\commands\MakeRouteCommand;
 use Gomaa\Base\commands\MakeServiceCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
