@@ -2,15 +2,16 @@
 
 namespace Gomaa\Base\Base\Repositories;
 
+use Gomaa\Base\Base\Models\BaseAuthModel;
 use Gomaa\Base\Base\Models\BaseModel;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class BaseApiRepository extends BaseRepository implements RepositoryInterface
 {
-    /**
-     * @var BaseModel $model
+   /**
+     * @var BaseModel|BaseAuthModel
      */
-    protected BaseModel $model;
+    protected BaseModel|BaseAuthModel $model;
 
     /**
      * Get all with Base filter.
