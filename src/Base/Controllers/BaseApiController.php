@@ -10,12 +10,22 @@ class BaseApiController extends BaseController implements ControllerInterface
 {
 
     /**
-     * @param BaseApiService $service
-     * @param $actions
+     * @var BaseApiService
      */
-    public function __construct(BaseApiService $service,$actions)
+    protected BaseApiService $service;
+
+    protected array $actions;
+
+    /**
+     * @param BaseApiService $service
+     * @param array $actions
+     */
+    public function __construct(BaseApiService $service, array $actions)
     {
-        parent::__construct($service,$actions);
+        parent::__construct($service, $actions);
+
+        $this->service = $service;
+        $this->actions = $actions;
     }
 
     /**
