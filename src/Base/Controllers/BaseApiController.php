@@ -8,24 +8,9 @@ use Illuminate\Http\Request;
 
 class BaseApiController extends BaseController implements ControllerInterface
 {
-
-    /**
-     * @var BaseApiService
-     */
-    protected BaseApiService $service;
-
-    protected array $actions;
-
-    /**
-     * @param BaseApiService $service
-     * @param array $actions
-     */
     public function __construct(BaseApiService $service, array $actions)
     {
         parent::__construct($service, $actions);
-
-        $this->service = $service;
-        $this->actions = $actions;
     }
 
     /**
