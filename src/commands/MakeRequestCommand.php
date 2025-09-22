@@ -159,12 +159,21 @@ class MakeRequestCommand extends Command
                         $fieldRules[0] = 'nullable';
                         break;
 
+                    // ✅ دعم enum:val1,val2,val3
                     case str_starts_with($part, 'enum:'):
                         $values = str_replace('enum:', '', $part);
                         $fieldRules[] = "in:$values";
                         break;
 
+                    // ✅ دعم enum('val1','val2')
+                    case preg_match("/^enum\((.*?)\)$/", $part, $matches):
+                        $values = str_replace("'", "", $matches[1]); // شيل ال single quotes
+                        $values = str_replace(" ", "", $values);     // شيل المسافات
+                        $fieldRules[] = "in:$values";
+                        break;
+
                     case str_starts_with($part, 'default:'):
+                        // متخزن في الداتا بيز بس مش بيتحقق في request
                         break;
 
                     default:
@@ -179,6 +188,5 @@ class MakeRequestCommand extends Command
 
         return implode("\n", $rules);
     }
-
 
 }
