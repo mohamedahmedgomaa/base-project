@@ -1,6 +1,6 @@
 <?php
 
-namespace Gomaa\Base\Commands;
+namespace Gomaa\Base\commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
