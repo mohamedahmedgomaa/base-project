@@ -14,7 +14,6 @@ class BaseApiController extends BaseController implements ControllerInterface
     }
 
     /**
-     * Display a listing of the resource.
      *
      * @param Request $request
      * @return JsonResponse
@@ -26,8 +25,7 @@ class BaseApiController extends BaseController implements ControllerInterface
     }
 
     /**
-     * Show the specified resource by id.
-     *
+     * @param Request $request
      * @param int $id
      * @return JsonResponse
      */
@@ -38,7 +36,6 @@ class BaseApiController extends BaseController implements ControllerInterface
 
 
     /**
-     * Store a newly created resource in storage.
      *
      * @param Request $request
      * @return JsonResponse
@@ -50,7 +47,6 @@ class BaseApiController extends BaseController implements ControllerInterface
 
 
     /**
-     * Update the specified resource in storage.
      *
      * @param Request $request
      * @param int $id
@@ -63,7 +59,6 @@ class BaseApiController extends BaseController implements ControllerInterface
 
 
     /**
-     * Remove the specified resource from storage.
      *
      * @param Request $request
      * @param int $id
