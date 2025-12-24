@@ -32,7 +32,7 @@ class BaseApiRepository extends BaseRepository implements RepositoryInterface
             ->allowedSorts($this->model::getAllowedSorts())
             ->defaultSort($this->model::getDefaultSort())
             ->with($this->model::getDefaultIncludedRelations())
-            ->with($this->model::getDefaultIncludedRelationsCount());
+            ->withCount($this->model::getDefaultIncludedRelationsCount());
 
         return $this->result($attributes, $QueryBuilder, $this->model->getTable());
     }
