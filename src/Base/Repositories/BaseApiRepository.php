@@ -29,6 +29,7 @@ class BaseApiRepository extends BaseRepository implements RepositoryInterface
             ->allowedFilters($this->model->getAllowedFilters())
             ->allowedFields($this->model::getAllowedFields())
             ->allowedIncludes($this->model::getAllowedIncludes())
+            ->allowedSorts($this->model::getAllowedSorts())
             ->defaultSort($this->model::getDefaultSort())
             ->with($this->model::getDefaultIncludedRelations())
             ->with($this->model::getDefaultIncludedRelationsCount());

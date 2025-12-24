@@ -67,6 +67,11 @@ class BaseModel extends Model
         return [];
     }
 
+    public static function getAllowedSorts(): array
+    {
+        return [];
+    }
+
     public static function getDefaultIncludedRelations(): array
     {
         return [];

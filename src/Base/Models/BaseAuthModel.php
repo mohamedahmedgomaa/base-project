@@ -69,6 +69,11 @@ class BaseAuthModel extends Authenticatable
         return [];
     }
 
+    public static function getAllowedSorts(): array
+    {
+        return [];
+    }
+
     public static function getDefaultIncludedRelations(): array
     {
         return [];
